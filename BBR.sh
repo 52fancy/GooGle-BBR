@@ -49,6 +49,7 @@ Install()
     if uname -r | grep -Eqi "4.9."; then
 	    if lsmod | grep -Eqi "bbr"; then
 		    echo "您已经成功安装BBR"
+		    exit
 		else
 		    if [ ! `cat /etc/sysctl.conf | grep -i -E "net.core.default_qdisc=fq"` ]; then
 		        echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
