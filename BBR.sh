@@ -65,7 +65,7 @@ Install()
 			exit
 		fi
 		
-	    echo -n "内核不一致，即将替换内核 [y or n]:  "
+	    echo -n "内核不一致，即将替换内核 [y or n]："
 		read code
 		if [ $code = "y" -o $code = "Y" ]; then
 		    if [ $OS_Bit = "64" ]; then
