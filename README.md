@@ -12,3 +12,5 @@
     执行 lsmod | grep bbr
    
 如果结果显示bbr便安装成功
+
+注意：不支持Ovz小鸡，不支持Ovz小鸡，不支持Ovz小鸡！！！
