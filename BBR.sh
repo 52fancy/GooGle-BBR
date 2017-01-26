@@ -87,9 +87,8 @@ Install()
 		    sysctl -p >/dev/null 2>&1
 		
 			rm -f $0
-			echo -n "重启后生效，是否重启？[y]："
-			read is_reboot
-			if [ $is_reboot = "y" -o $is_reboot = "Y" ]; then
+			read -p "重启后生效，是否重启？[y]：" is_reboot
+			if [[ ${is_reboot} == "y" || ${is_reboot} == "Y" ]]; then
 			    reboot
 			else
 			    exit
