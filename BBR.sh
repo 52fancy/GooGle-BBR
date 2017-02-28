@@ -46,7 +46,7 @@ Get_OS_Bit()
 Install()
 {
     Get_OS_Bit
-    if uname -r | grep -Eqi "4.9."; then
+    if uname -r | grep -Eqi "4.10."; then
 	    if lsmod | grep -Eqi "bbr"; then
 		    echo "您已经成功安装BBR"
 		    exit
@@ -69,13 +69,13 @@ Install()
 		read code
 		if [ $code = "y" -o $code = "Y" ]; then
 		    if [ $OS_Bit = "64" ]; then
-		        rpm -ivh http://elrepo.org/linux/kernel/el6/x86_64/RPMS/kernel-ml-4.9.11-1.el6.elrepo.x86_64.rpm --force
+		        rpm -ivh http://elrepo.org/linux/kernel/el6/x86_64/RPMS/kernel-ml-4.10.1-1.el6.elrepo.x86_64.rpm --force
 			fi
 			if [ $OS_Bit = "32" ]; then
-		        rpm -ivh http://elrepo.org/linux/kernel/el6/i386/RPMS/kernel-ml-4.9.11-1.el6.elrepo.i686.rpm --force
+		        rpm -ivh http://elrepo.org/linux/kernel/el6/i386/RPMS/kernel-ml-4.10.1-1.el6.elrepo.i686.rpm --force
 			fi
 			
-			kernel_default=`grep '^title ' /boot/grub/grub.conf | awk -F'title ' '{print i++ " : " $2}' | grep "4.9." | grep -v debug | cut -d' ' -f1`
+			kernel_default=`grep '^title ' /boot/grub/grub.conf | awk -F'title ' '{print i++ " : " $2}' | grep "4.10." | grep -v debug | cut -d' ' -f1`
 			sed -i "s/^default.*/default=${kernel_default}/" /boot/grub/grub.conf
 			
 			if [ ! `cat /etc/sysctl.conf | grep -i -E "net.core.default_qdisc=fq"` ]; then
