@@ -69,7 +69,7 @@ Install()
 		read code
 		if [ $code = "y" -o $code = "Y" ]; then
 		    if [ $OS_Bit = "64" ]; then
-		        rpm -ivh http://elrepo.org/linux/kernel/el6/x86_64/RPMS/kernel-ml-4.10.1-1.el6.elrepo.x86_64.rpm --force
+		        rpm -ivh http://elrepo.org/linux/kernel/el6/x86_64/RPMS/kernel-ml-4.10.3-1.el6.elrepo.x86_64.rpm --force
 			fi
 			if [ $OS_Bit = "32" ]; then
 		        rpm -ivh http://elrepo.org/linux/kernel/el6/i386/RPMS/kernel-ml-4.10.1-1.el6.elrepo.i686.rpm --force
