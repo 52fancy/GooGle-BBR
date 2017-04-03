@@ -69,10 +69,10 @@ Install()
 		read code
 		if [ $code = "y" -o $code = "Y" ]; then
 		    if [ $OS_Bit = "64" ]; then
-		        rpm -ivh http://elrepo.org/linux/kernel/el6/x86_64/RPMS/kernel-ml-4.10.5-1.el6.elrepo.x86_64.rpm --force
+		        rpm -ivh https://github.com/52fancy/GooGle-BBR/raw/master/kernel/kernel-4.10.el6.x86_64.rpm --force
 			fi
 			if [ $OS_Bit = "32" ]; then
-		        rpm -ivh http://elrepo.org/linux/kernel/el6/i386/RPMS/kernel-ml-4.10.5-1.el6.elrepo.i686.rpm --force
+		        rpm -ivh https://github.com/52fancy/GooGle-BBR/raw/master/kernel/kernel-4.10.el6.i686.rpm --force
 			fi
 			
 			kernel_default=`grep '^title ' /boot/grub/grub.conf | awk -F'title ' '{print i++ " : " $2}' | grep "4.10." | grep -v debug | cut -d' ' -f1`
