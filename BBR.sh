@@ -1,6 +1,7 @@
 #!/bin/bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
+rm -f $0
 
 # Check if user is root
 if [ $(id -u) != "0" ]; then
@@ -45,7 +46,7 @@ Install()
 	    echo "您已经成功安装BBR"
 		exit
 	else
-	    echo -n "即将升级内核？ [Y]：" is_update
+	    read -p "即将升级内核？[Y]：" is_update
 		if [[ ${is_update} == "y" || ${is_update} == "Y" ]]; then
 		    rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
             rpm -Uvh http://www.elrepo.org/elrepo-release-6-6.el6.elrepo.noarch.rpm
@@ -60,7 +61,6 @@ Install()
 			
 			sysctl -p >/dev/null 2>&1
 			
-	        rm -f $0
 			read -p "重启后生效，是否重启？[Y]：" is_reboot
 			if [[ ${is_reboot} == "y" || ${is_reboot} == "Y" ]]; then
 			    reboot
