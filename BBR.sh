@@ -17,6 +17,11 @@ echo "+------------------------------------------------------------------------+
 echo "|                 Welcome to  http://github.com/52fancy                  |"
 echo "+------------------------------------------------------------------------+"
 
+if [ ! -f "/boot/grub/grub.conf" ];then
+	echo "不支持当前系统，即将退出程序！"
+	exit
+fi
+
 Get_RHEL_Version()
 {
     if grep -Eqi "release 5." /etc/redhat-release; then
@@ -34,60 +39,29 @@ if [ $RHEL_Version != "6" ]; then
 	exit
 fi
 
-Get_OS_Bit()
-{
-    if [[ `getconf WORD_BIT` = '32' && `getconf LONG_BIT` = '64' ]] ; then
-        OS_Bit='64'
-    else
-        OS_Bit='32'
-    fi
-}
-
 Install()
 {
-    Get_OS_Bit
-    if uname -r | grep -Eqi "4.10."; then
-	    if lsmod | grep -Eqi "bbr"; then
-		    echo "您已经成功安装BBR"
-		    exit
-		else
-		    if [ ! `cat /etc/sysctl.conf | grep -i -E "net.core.default_qdisc=fq"` ]; then
-		        echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
-		    fi
-		    if [ ! `cat /etc/sysctl.conf | grep -i -E "net.ipv4.tcp_congestion_control=bbr"` ]; then
-		        echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
-		    fi
-		    sysctl -p
-		fi
+    if lsmod | grep -Eqi "bbr"; then
+	    echo "您已经成功安装BBR"
+		exit
 	else
-	    if [ ! -f "/boot/grub/grub.conf" ];then
-			echo "不支持当前系统，即将退出程序！"
-			exit
-		fi
-		
-	    echo -n "内核不一致，即将替换内核 [y or n]："
-		read code
-		if [ $code = "y" -o $code = "Y" ]; then
-		    if [ $OS_Bit = "64" ]; then
-		        rpm -ivh https://github.com/52fancy/GooGle-BBR/raw/master/kernel/kernel-4.10.el6.x86_64.rpm --force
-			fi
-			if [ $OS_Bit = "32" ]; then
-		        rpm -ivh https://github.com/52fancy/GooGle-BBR/raw/master/kernel/kernel-4.10.el6.i686.rpm --force
-			fi
+	    echo -n "即将升级内核？ [Y]：" is_update
+		if [[ ${is_update} == "y" || ${is_update} == "Y" ]]; then
+		    rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+            rpm -Uvh http://www.elrepo.org/elrepo-release-6-6.el6.elrepo.noarch.rpm
+			yum --enablerepo=elrepo-kernel -y install kernel-ml kernel-ml-devel
 			
-			kernel_default=`grep '^title ' /boot/grub/grub.conf | awk -F'title ' '{print i++ " : " $2}' | grep "4.10." | grep -v debug | cut -d' ' -f1`
-			sed -i "s/^default.*/default=${kernel_default}/" /boot/grub/grub.conf
+			sed -i 's/^default=.*/default=0/g' /boot/grub/grub.conf
 			
-			if [ ! `cat /etc/sysctl.conf | grep -i -E "net.core.default_qdisc=fq"` ]; then
-		        echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
-		    fi
-		    if [ ! `cat /etc/sysctl.conf | grep -i -E "net.ipv4.tcp_congestion_control=bbr"` ]; then
-		        echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
-		    fi
-		    sysctl -p >/dev/null 2>&1
-		
-			rm -f $0
-			read -p "重启后生效，是否重启？[y]：" is_reboot
+			sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
+			sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
+			echo "net.core.default_qdisc = fq" >> /etc/sysctl.conf
+			echo "net.ipv4.tcp_congestion_control = bbr" >> /etc/sysctl.conf
+			
+			sysctl -p >/dev/null 2>&1
+			
+	        rm -f $0
+			read -p "重启后生效，是否重启？[Y]：" is_reboot
 			if [[ ${is_reboot} == "y" || ${is_reboot} == "Y" ]]; then
 			    reboot
 			else
@@ -97,8 +71,8 @@ Install()
 		    echo "程序即将退出安装"
             exit
 		fi
-	fi
+    fi
 }
- 
+
 Install
 exit
