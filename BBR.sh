@@ -49,7 +49,7 @@ Install()
 	    read -p "即将升级内核？[Y]：" is_update
 		if [[ ${is_update} == "y" || ${is_update} == "Y" ]]; then
 		    rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-            rpm -Uvh http://www.elrepo.org/elrepo-release-6-6.el6.elrepo.noarch.rpm
+            rpm -Uvh http://www.elrepo.org/elrepo-release-6-8.el6.elrepo.noarch.rpm
 			yum --enablerepo=elrepo-kernel -y install kernel-ml kernel-ml-devel
 			
 			sed -i 's/^default=.*/default=0/g' /boot/grub/grub.conf
