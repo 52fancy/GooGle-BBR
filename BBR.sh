@@ -47,10 +47,13 @@ Install()
 		exit
 	else
 	    read -p "即将升级内核？[Y]：" is_update
-		if [[ ${is_update} == "y" || ${is_update} == "Y" ]]; then
-		    rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-            rpm -Uvh http://www.elrepo.org/elrepo-release-6-8.el6.elrepo.noarch.rpm
-			yum --enablerepo=elrepo-kernel -y install kernel-ml kernel-ml-devel
+		if [[ ${is_update} == "y" || ${is_update} == "Y" ]]; then		
+			if [ $OS_Bit = "64" ]; then
+		        rpm -ivh https://github.com/52fancy/GooGle-BBR/raw/master/kernel/kernel-4.10.el6.x86_64.rpm --force
+			fi
+			if [ $OS_Bit = "32" ]; then
+		        rpm -ivh https://github.com/52fancy/GooGle-BBR/raw/master/kernel/kernel-4.10.el6.i686.rpm --force
+			fi
 			
 			sed -i 's/^default=.*/default=0/g' /boot/grub/grub.conf
 			
