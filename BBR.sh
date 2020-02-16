@@ -34,6 +34,15 @@ Get_RHEL_Version()
     fi
 }
 
+Get_OS_Bit()
+{
+    if [[ `getconf WORD_BIT` = '32' && `getconf LONG_BIT` = '64' ]] ; then
+        OS_Bit='64'
+    else
+        OS_Bit='32'
+    fi
+}
+
 Get_RHEL_Version
 if [ $RHEL_Version != "6" ]; then
     echo "Error: You must be CentOS 6 to run this script, please use CentOS 6 to install BBR"
