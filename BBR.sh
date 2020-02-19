@@ -56,7 +56,8 @@ Install()
 		exit
 	else
 	    read -p "即将升级内核？[Y]：" is_update
-		if [[ ${is_update} == "y" || ${is_update} == "Y" ]]; then		
+		if [[ ${is_update} == "y" || ${is_update} == "Y" ]]; then
+			Get_OS_Bit
 			if [ $OS_Bit = "64" ]; then
 		        rpm -ivh https://github.com/52fancy/GooGle-BBR/raw/master/kernel/kernel-4.10.el6.x86_64.rpm --force
 			fi
